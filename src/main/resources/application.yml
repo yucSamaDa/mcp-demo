@@ -7,7 +7,7 @@ spring:
         sseMessageEndpoint: /sse
         tools-enabled: true
     openai:
-      api-key: sk-2b338085218944698101cc7967e12c4a
+      api-key: YOUR_API_KEY
       base-url: https://api.deepseek.com
       chat:
         options:
