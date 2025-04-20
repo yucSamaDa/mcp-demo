@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: mcp-demo
+  ai:
+    mcp:
+      server:
+        sseMessageEndpoint: /sse
+        tools-enabled: true
+    openai:
+      api-key: sk-2b338085218944698101cc7967e12c4a
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
+          temperature: 0.7
+          max-tokens: 2000
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+server:
+  port: 8080
+  
+logging:
+  level:
+    root: INFO
+    org.springframework.ai: DEBUG
+    com.example.mcpdemo: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
