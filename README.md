@@ -123,6 +123,50 @@ public class CommonConfiguration {
 ```
 
 这个配置类实现了以下功能：
+
+- 创建ChatClient实例并注入工具回调提供者
+- 配置MCP服务器的SSE(Server-Sent Events)传输
+- 设置MCP路由功能
+
+### 5. 配置应用属性
+### 4. 创建通用配置类
+
+创建一个通用配置类`CommonConfiguration.java`，配置ChatClient、MCP传输和路由：
+
+```java
+@Configuration
+public class CommonConfiguration {
+
+    private final String SSE_ENDPOINT = "/sse";
+
+    @Autowired
+    private ToolCallbackProvider fileSearchTools;
+
+    @Bean
+    public ChatClient chatClient(OpenAiChatModel chatModel) {
+        return ChatClient
+                .builder(chatModel)
+                .defaultTools(fileSearchTools)
+                .build();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public WebMvcSseServerTransport webMvcSseServerTransport(ObjectMapper objectMapper,
+                                                             McpServerProperties serverProperties) {
+        return new WebMvcSseServerTransport(objectMapper,
+                serverProperties.getSseMessageEndpoint(),
+                SSE_ENDPOINT);
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> mvcMcpRouterFunction(WebMvcSseServerTransport transport) {
+        return transport.getRouterFunction();
+    }
+}
+```
+
+这个配置类实现了以下功能：
 - 创建ChatClient实例并注入工具回调提供者
 - 配置MCP服务器的SSE(Server-Sent Events)传输
 - 设置MCP路由功能
@@ -223,9 +267,9 @@ MCP(Model Context Protocol)是一个允许LLM与外部工具交互的协议。�
 
 用户可以通过聊天界面，使用自然语言请求文件查找功能，例如：
 
-* "帮我在D盘查找名称包含report的文件"
-* "在C:/Users/文件夹中找出包含'hello world'内容的文件"
-* "显示Documents目录下最近修改的10个文件"
+- "帮我在D盘查找名称包含report的文件"
+- "在C:/Users/文件夹中找出包含'hello world'内容的文件"
+- "显示Documents目录下最近修改的10个文件"
 
 系统会自动识别这些请求并调用相应的工具完成任务。
 

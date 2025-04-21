@@ -23,7 +23,7 @@ public class FileSearchService {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Tool(description = "在指定目录下查找文件，当需要模糊查询文件时使用")
-    public List<String> findFiles(@ToolParam(description = "待搜索的目录，例如E:\\music\\part3")String directory,@ToolParam(description = "文件名模糊匹配模式") String namePattern) {
+    public List<String> findFiles(@ToolParam(description = "待搜索的目录")String directory,@ToolParam(description = "文件名模糊匹配模式") String namePattern) {
         List<String> results = new ArrayList<>();
         File dir = new File(directory);
 
